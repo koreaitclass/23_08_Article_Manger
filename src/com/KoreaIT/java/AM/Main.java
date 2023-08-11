@@ -54,7 +54,7 @@ public class Main {
         System.out.printf("내용 : ");
         String content = scan.nextLine();
 
-        Article article = new Article(id, title, content);
+        Article article = new Article(id, title, content);`
         articles.add(article);
 
         System.out.printf("%d번 게시글이 생성되었습니다.\n", lastId);
