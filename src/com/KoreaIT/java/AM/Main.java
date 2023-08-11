@@ -1,21 +1,23 @@
 package com.KoreaIT.java.AM;
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
   public static void main(String[] args)
   {
     System.out.println("== 프로그램 시작 ==");
     Scanner scan = new Scanner(System.in);
+    int lastId = 0;
 
-
-    Article articles = new Article(); // 생성
+    List<Article> articles = new ArrayList<>(); // 생성
 
 
 
 
     while (true) {
       System.out.printf("명령어 ) ");
-      String cmd = scan.nextLine();
+      String cmd = scan.nextLine().trim(); // trim == 양 끝의 공백 제거
 
       if (cmd.length() == 0) {
         System.out.println("명령어를 입력하세요.");
@@ -32,29 +34,43 @@ public class Main {
 
       else if (cmd.equals("article list")) {
         System.out.println("-- 게시글 목록 --");
-        if (articles.lastId == 0)
+        if (articles.size() == 0)
           System.out.println("게시글이 없습니다.");
         else {
-          System.out.printf("%d) %s\n", articles.Id, articles.title);
+          for (int i = articles.size() - 1; i >= 0; i--) {
+            Article article = articles.get(i);
+            System.out.printf("%d |  %s\n", article.Id, article.title);
+          }
         }
       }
+
       else if (cmd.equals("article write")) {
+        int id = lastId + 1;
+        lastId = id;
+
         System.out.println("-- 게시글 작성 --");
         System.out.printf("제목 : ");
-        articles.title = scan.nextLine();
+        String title = scan.nextLine();
         System.out.printf("내용 : ");
-        articles.content = scan.nextLine();
+        String content = scan.nextLine();
 
-        articles.Id++;
-        articles.lastId = articles.Id;
-        System.out.printf("%d번 게시글이 생성되었습니다.\n", articles.lastId);
+        Article article = new Article(id, title, content);
+        articles.add(article);
+
+        System.out.printf("%d번 게시글이 생성되었습니다.\n", lastId);
       }
 
       else if (cmd.equals("article view")) {
         System.out.printf("게시글 번호 입력 : ");
         int id = scan.nextInt();
         System.out.println("-- 게시글 열람 --");
-        System.out.printf("제목 : %s\n내용 : %s\n", articles.title, articles.content);
+        if (id > articles.size()) {
+          System.out.println("해당 번호의 게시글은 존재하지 않습니다.");
+        }
+        else {
+          Article article = articles.get(id - 1);
+          System.out.printf("제목 : %s\n내용 : %s\n", article.title, article.content);
+        }
       }
 
       else
@@ -71,7 +87,10 @@ class Article {
   String title;
   String content;
 
-  void write() {
+  Article(int id, String title, String content) {
+    this.Id = id;
+    this.title = title;
+    this.content = content;
   }
 
 
