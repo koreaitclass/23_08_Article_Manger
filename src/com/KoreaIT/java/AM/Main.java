@@ -56,8 +56,7 @@ public class Main {
         System.out.printf("게시글 번호 입력 : ");
         int id = scan.nextInt();
         System.out.println("-- 게시글 열람 --");
-        System.out.printf("제목 : %s \n내용 : %s\n", articles.title, articles.content);
-        continue;
+        System.out.printf("제목 : %s\n내용 : %s\n", articles.title, articles.content);
       }
 
       else
