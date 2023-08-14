@@ -1,4 +1,6 @@
 package com.KoreaIT.java.AM;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,7 @@ public class Main {
 
 
     while (true) {
-      System.out.printf("명령어 ) ");
+      System.out.printf("\n명령어 ) ");
       String cmd = scan.nextLine().trim(); // trim == 양 끝의 공백 제거
 
       if (cmd.length() == 0) {
@@ -60,27 +62,61 @@ public class Main {
         System.out.printf("내용 : ");
         String content = scan.nextLine();
 
-        Article article = new Article(id, title, content);
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date(System.currentTimeMillis());
+
+        Article article = new Article(id, title, content, formatter.format(date));
         articles.add(article);
 
         System.out.printf("%d번 게시글이 생성되었습니다.\n", lastId);
       }
 
-      else if (cmd.equals("article view")) {
-        System.out.printf("게시글 번호 입력 : ");
-        int id = scan.nextInt();
+      else if (cmd.startsWith("article view")) {
+        String index[] = cmd.split(" ");
+        if (index.length < 3) {
+          System.out.println("게시글의 번호를 입력해야 합니다.");
+          continue;
+        }
+        int id = Integer.parseInt(index[2]);
+
         System.out.println("-- 게시글 열람 --");
-        if (id > articles.size()) {
-          System.out.println("해당 번호의 게시글은 존재하지 않습니다.");
+
+        if (id > articles.size() || id <= 0) {
+          System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
         }
         else {
           Article article = articles.get(id - 1);
-          System.out.printf("제목 : %s\n내용 : %s\n", article.title, article.content);
+          System.out.printf("번호 : %d \n작성일 : %s \n제목 : %s \n내용 : %s \n", id, article.date, article.title, article.content);
         }
       }
 
-      else if (cmd.equals("article delete")) {
+      else if (cmd.startsWith("article delete")) {
+        String index[] = cmd.split(" ");
+        if (index.length < 3) {
+          System.out.println("게시글의 번호를 입력해야 합니다.");
+          continue;
+        }
+        int id = Integer.parseInt(index[2]);
+        if (id > articles.size() || id <= 0) {
+          System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
+          continue;
+        }
 
+        Article article = articles.get(id - 1);
+        System.out.printf("%d번 게시글을 정말로 삭제하시겠습니까? \n제목 : %s \n[Y/N]\n", id, article.title);
+        String answer = scan.nextLine().trim(); // trim == 양 끝의 공백 제거
+        if(answer.equals("Y") || answer.equals("y")) {
+          articles.remove(id - 1);
+          for (int i = articles.size() - 1; i >= id - 1; i--) {
+            Article article_data = articles.get(i);
+            article_data.Id--; // 게시글 Id를 하나씩 감소시킴
+          }
+          System.out.println("게시글을 정상적으로 삭제했습니다.");
+        }
+        else if (answer.equals("N") || answer.equals("n"))
+          System.out.println("삭제를 취소했습니다.");
+        else
+          System.out.println("잘못된 입력으로 삭제가 취소됐습니다.");
       }
 
 
@@ -97,11 +133,13 @@ class Article {
   int Id;
   String title;
   String content;
+  String date;
 
-  Article(int id, String title, String content) {
+  Article(int id, String title, String content, String date) {
     this.Id = id;
     this.title = title;
     this.content = content;
+    this.date = date;
   }
 
 
