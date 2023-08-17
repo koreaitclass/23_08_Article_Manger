@@ -1,7 +1,7 @@
 package com.KoreaIT.java.AM;
 
 
-public class Article {
+public class Article extends Dto {
   int lastId; // 미사용이네
   int id;
   String title;
