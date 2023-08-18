@@ -10,6 +10,7 @@ public class MemberController extends Controller {
   private String cmd;
   //  private String actionMethodName; // 없어도 OK
   public int lastUserId = 0; // public static int
+  public Member loginedMember = null;
 
   MemberController(Scanner scan) {
     this.members = new ArrayList<>(); // 배열로 생성, private(접근지정자) static
@@ -30,6 +31,9 @@ public class MemberController extends Controller {
         break;
       case "check":
         doCheckOnline();
+        break;
+      case "logout":
+        doLogOut();
         break;
 
       default:
@@ -94,12 +98,17 @@ public class MemberController extends Controller {
     for (Member member : members) {
       if (member.id.equals(loginID)) {
         if (member.password.equals(loginPW)) {
-          member.online = true;
+//          member.online = true;
+          loginedMember = member;
           System.out.printf("%s님이 로그인 했습니다.\n", member.nickname);
-        } else
+          return;
+        }
+        else
           System.out.println("비밀번호를 다시 확인해주세요.");
+        return;
       }
     }
+    System.out.println("아이디를 다시 확인해주세요.");
 
   }
 
@@ -115,13 +124,51 @@ public class MemberController extends Controller {
     String id = index[2];
     for (Member member : members) {
       if (member.id.equals(id)) {
-        if (member.online == true)
-          System.out.printf("%s님은 로그인 상태입니다.\n", member.id);
+//        if (member.online == true) ↓↓
+        if (member == loginedMember)
+          System.out.printf("%s 님은 로그인 상태입니다.\n", member.nickname);
         else
-          System.out.printf("%s님은 로그아웃 상태입니다.\n", member.id);
+          System.out.printf("%s 님은 로그아웃 상태입니다.\n", member.nickname);
+        return;
       }
     }
   }
+
+
+  private void doLogOut() {
+    if (isLogined()) {
+      loginedMember = null;
+      System.out.println("로그아웃 되었습니다.");
+      return;
+    }
+
+
+    System.out.println("로그인 되어있지 않습니다.");
+  }
+
+
+
+  private boolean isLogined() {
+    return loginedMember != null;
+  }
+
+  public void makeTestData() { // public 대신 static도 가능
+    System.out.println("회원 데이터 생성");
+    int id = lastUserId + 1;
+    lastUserId = id;
+
+    String regData = Util.getNowDateStr();
+
+    Member member = new Member(id, "admin", "admin", "admin", regData);
+    id++;
+    members.add(new Member(id, "test1", "test1", "test1", regData));
+    id++;
+    members.add(new Member(id, "test2", "test2", "test2", regData));
+    id++;
+    members.add(new Member(id, "test3", "test3", "test3", regData));
+
+    lastUserId = id;
+    }
 
 
 }

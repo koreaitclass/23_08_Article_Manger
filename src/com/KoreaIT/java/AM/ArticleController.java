@@ -214,7 +214,7 @@ public class ArticleController extends Controller{
   }
 
   public void makeTestData() { // public 대신 static도 가능
-    System.out.println("테스트 데이터 생성");
+    System.out.println("게시글 테스트 데이터 생성");
 
     for (int i = 0; i < 4; i++) {
       int id = lastId + 1;

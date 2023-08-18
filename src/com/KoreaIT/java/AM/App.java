@@ -11,6 +11,7 @@ public class App {
     ArticleController articleController = new ArticleController(scan);
 
     articleController.makeTestData();
+    memberController.makeTestData();
 
 
     while (true) {
