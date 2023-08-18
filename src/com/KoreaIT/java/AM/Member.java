@@ -6,6 +6,7 @@ public class Member extends Dto {
   String password;
   String nickname;
   String date;
+  boolean online;
   Member(int userID, String id, String password, String nickname, String date) {
     this.userID = userID;
     this.id = id;

@@ -30,6 +30,8 @@ public class App {
 
       else if (cmd.equals("help")) {
         System.out.println("member join - 회원가입");
+        System.out.println("member login - 로그인");
+        System.out.println("member check (id) - 온라인 여부 확인");
         System.out.println("article list [keyword] - 게시글 목록 [키워드 검색]");
         System.out.println("article write - 게시글 작성");
         System.out.println("article view (number) - 게시글 열람");
@@ -42,6 +44,7 @@ public class App {
         System.out.println("자세한 명령어는 help를 입력해주세요.");
         continue;
       }
+
       else if (cmdBits.length == 1) {
         System.out.println("존재하지 않는 명령어입니다.");
         continue;

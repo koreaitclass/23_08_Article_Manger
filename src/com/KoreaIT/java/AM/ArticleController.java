@@ -79,7 +79,6 @@ public class ArticleController extends Controller{
     }
   }
 
-
   private void doWrite() {
     int id = lastId + 1;
     lastId = id;
@@ -229,5 +228,8 @@ public class ArticleController extends Controller{
       articles.add(article);
     }
   }
+
+
+
 }
 
